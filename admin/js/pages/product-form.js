@@ -40,17 +40,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Handle shipping dropdown
-  const shippingTypeEl = document.getElementById('p-shipping-type');
-  const shippingChargeGroup = document.getElementById('shipping-charge-group');
-  shippingTypeEl.addEventListener('change', (e) => {
-    if (e.target.value === 'charge') {
-      shippingChargeGroup.style.display = 'block';
-    } else {
-      shippingChargeGroup.style.display = 'none';
-      document.getElementById('p-shipping-charge').value = '';
-    }
-  });
 
   setupImageUploader();
 
