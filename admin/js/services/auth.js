@@ -145,7 +145,7 @@ function initMobileNav() {
     // Inject Menu Button
     const menuBtn = document.createElement('button');
     menuBtn.className = 'icon-btn mobile-menu-btn';
-    menuBtn.innerHTML = '<i data-lucide=""menu""></i>';
+    menuBtn.innerHTML = '<i data-lucide="menu"></i>';
     menuBtn.style.marginRight = 'var(--space-2)';
     headerLeft.prepend(menuBtn);
 
