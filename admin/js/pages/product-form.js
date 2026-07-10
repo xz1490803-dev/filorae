@@ -90,12 +90,6 @@ async function loadProductData(id) {
       document.getElementById('p-price').value = p.price || '';
       document.getElementById('p-oldprice').value = p.oldPrice || '';
       document.getElementById('p-stock').value = p.inStock ? 'true' : 'false';
-      document.getElementById('p-shipping-type').value = p.shippingType || 'free';
-      if (p.shippingType === 'charge') {
-        document.getElementById('shipping-charge-group').style.display = 'block';
-        document.getElementById('p-shipping-charge').value = p.shippingCharge || '';
-      }
-      document.getElementById('p-delivery').value = p.deliveryTime || '';
       document.getElementById('p-category').value = p.category || '';
       document.getElementById('p-badge').value = p.badge || '';
       document.getElementById('p-featured').checked = !!p.featured;
@@ -282,9 +276,6 @@ async function saveProduct() {
       price: parseFloat(document.getElementById('p-price').value),
       oldPrice: document.getElementById('p-oldprice').value ? parseFloat(document.getElementById('p-oldprice').value) : null,
       inStock: document.getElementById('p-stock').value === 'true',
-      shippingType: document.getElementById('p-shipping-type').value,
-      shippingCharge: document.getElementById('p-shipping-type').value === 'charge' && document.getElementById('p-shipping-charge').value ? parseFloat(document.getElementById('p-shipping-charge').value) : 0,
-      deliveryTime: document.getElementById('p-delivery').value.trim(),
       category: document.getElementById('p-category').value,
       badge: document.getElementById('p-badge').value,
       bestSeller: document.getElementById('p-badge').value === 'best-seller',
