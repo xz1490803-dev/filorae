@@ -135,3 +135,56 @@ function initTheme() {
 
 // Initialize theme immediately
 initTheme();
+
+// ============================================
+// Mobile Navigation Setup
+// ============================================
+function initMobileNav() {
+  const headerLeft = document.querySelector('.header__left');
+  if (headerLeft && !document.querySelector('.mobile-menu-btn')) {
+    // Inject Menu Button
+    const menuBtn = document.createElement('button');
+    menuBtn.className = 'icon-btn mobile-menu-btn';
+    menuBtn.innerHTML = '<i data-lucide=""menu""></i>';
+    menuBtn.style.marginRight = 'var(--space-2)';
+    headerLeft.prepend(menuBtn);
+
+    // Inject Overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    document.body.appendChild(overlay);
+
+    const sidebar = document.querySelector('.sidebar');
+    
+    // Toggle Logic
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      overlay.classList.add('active');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+    
+    // Close sidebar on nav item click (mobile)
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+      });
+    });
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMobileNav);
+} else {
+  initMobileNav();
+}
