@@ -85,12 +85,11 @@ export function getCartTotals() {
   
   cart.forEach(item => {
     subtotal += (item.price * item.quantity);
-    if (item.shippingCharge) {
-      // Shipping charge is usually per quantity, or maybe flat per item?
-      // For now, let's assume it's per quantity to be safe.
-      shipping += (item.shippingCharge * item.quantity);
-    }
   });
+  
+  if (cart.length > 0) {
+    shipping = 80;
+  }
   
   return {
     subtotal,

@@ -64,7 +64,6 @@ function updateCartUI() {
                 <div>
                   <h4 style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-heading);margin-bottom:2px;">${item.name}</h4>
                   ${item.variant ? `<div style="font-size:var(--text-xs);color:var(--color-text-muted);">${item.variant}</div>` : ''}
-                  ${item.shippingCharge ? `<div style="font-size:var(--text-xs);color:var(--terracotta-500);margin-top:2px;">+ ${formatPrice(item.shippingCharge)} Shipping</div>` : ''}
                 </div>
                 <button class="btn-remove-item" data-id="${item.productId}" data-variant="${item.variant || ''}" aria-label="Remove item" style="background:none;border:none;color:var(--color-text-muted);cursor:pointer;padding:2px;">
                   <i data-lucide="x" style="width:16px;height:16px;"></i>

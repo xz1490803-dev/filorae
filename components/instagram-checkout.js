@@ -23,9 +23,9 @@ export function openInstagramCheckout(cartItems = []) {
   cartItems.forEach(item => {
     totalItems += item.quantity;
     subtotal += (item.price * item.quantity);
-    if (item.shippingCharge) totalShipping += (item.shippingCharge * item.quantity);
   });
 
+  totalShipping = 80;
   const grandTotal = subtotal + totalShipping;
 
   // Build items preview HTML (show up to 2 items, then "+ X more")
@@ -69,7 +69,7 @@ export function openInstagramCheckout(cartItems = []) {
           </div>
           <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);margin-bottom:8px;">
             <span>Shipping</span>
-            <span>${totalShipping > 0 ? formatPrice(totalShipping) : 'Free'}</span>
+            <span>+ ₹80</span>
           </div>
           <div style="display:flex;justify-content:space-between;font-weight:var(--fw-bold);color:var(--sage-900);">
             <span>Total (${totalItems} items)</span>
@@ -211,18 +211,15 @@ function buildOrderMessage(cartItems, customer) {
     msg += `📦 Item ${index + 1}: ${item.name}\n`;
     if (item.variant) msg += `🎨 Variant: ${item.variant}\n`;
     msg += `🔢 Quantity: ${item.quantity}\n`;
-    msg += `💰 Price: ${formatPrice(item.price * item.quantity)}\n`;
-    if (item.shippingCharge) {
-      msg += `🚚 Shipping: ${formatPrice(item.shippingCharge * item.quantity)}\n`;
-      shipping += (item.shippingCharge * item.quantity);
-    }
-    msg += `\n`;
+    msg += `💰 Price: ${formatPrice(item.price * item.quantity)}\n\n`;
     subtotal += (item.price * item.quantity);
   });
   
+  shipping = 80;
+
   msg += `━━━━━━━━━━━━━━━━━━━\n`;
   msg += `💳 Subtotal: ${formatPrice(subtotal)}\n`;
-  if (shipping > 0) msg += `🚚 Total Shipping: ${formatPrice(shipping)}\n`;
+  msg += `🚚 Total Shipping: ₹80\n`;
   msg += `💸 GRAND TOTAL: ${formatPrice(subtotal + shipping)}\n\n`;
 
   msg += `━━━━━━━━━━━━━━━━━━━\n\n`;

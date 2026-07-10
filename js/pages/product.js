@@ -116,7 +116,7 @@ function renderProduct(product) {
         ${oldPrice ? `<span class="product-info__old-price">${formatPrice(oldPrice)}</span>` : ''}
         ${discount > 0 ? `<span class="product-info__discount-badge">${discount}% OFF</span>` : ''}
         <span class="product-info__shipping" style="font-size: var(--text-sm); color: var(--color-text-muted); margin-left: var(--space-2); align-self: center;">
-          ${shippingType === 'charge' && shippingCharge > 0 ? `+ ${formatPrice(shippingCharge)} Shipping` : '+ Free Shipping'}
+          + ₹80 Shipping
         </span>
       </div>
 
