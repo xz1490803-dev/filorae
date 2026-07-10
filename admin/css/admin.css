@@ -5,7 +5,7 @@
 /* --- Layout --- */
 .admin-layout {
   display: flex;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -81,12 +81,12 @@
   background-color: rgba(92, 122, 92, 0.15); /* Tint of brand-primary */
 }
 
-/* --- Main Content --- */
 .main-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0; /* Fix flex child truncation */
+  min-width: 0;
+  min-height: 0; /* Fix flex child vertical truncation */
 }
 
 /* --- Header --- */
@@ -425,6 +425,10 @@ select.form-control {
 /* ============================================
    MOBILE RESPONSIVENESS
    ============================================ */
+.mobile-menu-btn {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .admin-layout {
     flex-direction: column;
@@ -480,8 +484,8 @@ select.form-control {
   .form-grid {
     grid-template-columns: 1fr !important;
   }
-}
-
-.mobile-menu-btn {
-  display: none;
+  
+  .content {
+    padding-bottom: 80px; /* Extra padding for mobile bottom */
+  }
 }
