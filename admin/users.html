@@ -85,18 +85,34 @@
           <p style="color:var(--text-secondary);margin-top:var(--space-2);">List of users registered on the frontend (Customer profiles).</p>
         </div>
 
-        <div class="card card-body">
-          <div style="display:flex;align-items:center;justify-content:center;height:300px;flex-direction:column;gap:var(--space-4);color:var(--text-tertiary);">
-            <i data-lucide="construction" style="width:48px;height:48px;"></i>
-            <p>Users directory is under construction.</p>
-            <p>Due to Firebase Client SDK limits, listing all users requires a Cloud Function or Admin SDK. Currently not implemented on the client.</p>
-          </div>
+        <div class="card" style="overflow-x: auto;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>UID</th>
+                <th>Last Login</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <tr>
+                <td colspan="4" style="text-align:center;padding:var(--space-8);color:var(--text-tertiary);">
+                  <div style="display:flex;align-items:center;justify-content:center;gap:var(--space-2);">
+                    <div style="width:20px;height:20px;border:2px solid var(--border-color);border-top-color:var(--brand-primary);border-radius:50%;animation:spin 1s linear infinite;"></div>
+                    Loading users...
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
       </main>
     </div>
   </div>
 
+  <script type="module" src="/admin/js/pages/users.js"></script>
   <script type="module">
     import { requireAdmin } from './js/services/auth.js';
     requireAdmin();

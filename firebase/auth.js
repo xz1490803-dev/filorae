@@ -2,7 +2,8 @@
 // FILORAE — Firebase Auth Service
 // ============================================
 
-import { auth } from './firebase.js';
+import { auth, db } from './firebase.js';
+import { doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js';
 import {
   signInWithPopup,
   GoogleAuthProvider,
@@ -21,11 +22,31 @@ const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 /**
+ * Helper to save user profile to Firestore
+ */
+async function saveUserToFirestore(user) {
+  if (!user) return;
+  try {
+    const userRef = doc(db, 'users', user.uid);
+    await setDoc(userRef, {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName || 'No Name',
+      photoURL: user.photoURL || '',
+      lastLoginAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error('Error saving user to Firestore:', error);
+  }
+}
+
+/**
  * Sign in with Google popup
  */
 export async function signInWithGoogle() {
   try {
     const result = await signInWithPopup(auth, googleProvider);
+    await saveUserToFirestore(result.user);
     return { success: true, user: result.user };
   } catch (error) {
     console.error('Google sign-in error:', error);
@@ -41,6 +62,7 @@ export async function signInWithEmail(email, password, rememberMe = false) {
     const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
     await setPersistence(auth, persistence);
     const result = await signInWithEmailAndPassword(auth, email, password);
+    await saveUserToFirestore(result.user);
     return { success: true, user: result.user };
   } catch (error) {
     console.error('Email sign-in error:', error);
@@ -56,7 +78,10 @@ export async function signUp(email, password, displayName) {
     const result = await createUserWithEmailAndPassword(auth, email, password);
     if (displayName) {
       await firebaseUpdateProfile(result.user, { displayName });
+      // Update local user object so saveUserToFirestore gets the name
+      result.user.displayName = displayName;
     }
+    await saveUserToFirestore(result.user);
     return { success: true, user: result.user };
   } catch (error) {
     console.error('Sign-up error:', error);
