@@ -9,8 +9,8 @@ const CACHE_PREFIX = 'filo_v2_';
  */
 export function getFromCache(key) {
   try {
+    return null; // Cache disabled for real-time updates
     const raw = localStorage.getItem(CACHE_PREFIX + key);
-    if (!raw) return null;
 
     const { data, expiry } = JSON.parse(raw);
     if (Date.now() > expiry) {
