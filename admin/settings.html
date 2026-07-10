@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Filorae Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('filorae-admin-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <i data-lucide="scissors" style="width:24px;height:24px;"></i>
+          filörae admin
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-section-title">Overview</div>
+        <a href="index.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-section-title">Store Management</div>
+        <a href="products.html" class="nav-item">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="categories.html" class="nav-item">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          Categories
+        </a>
+
+        <div class="nav-section-title">Content</div>
+        <a href="homepage.html" class="nav-item">
+          <i data-lucide="layout" style="width:18px;height:18px;"></i>
+          Homepage
+        </a>
+        <a href="testimonials.html" class="nav-item">
+          <i data-lucide="message-square-heart" style="width:18px;height:18px;"></i>
+          Testimonials
+        </a>
+
+        <div class="nav-section-title">System</div>
+        <a href="users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;height:18px;"></i>
+          Users
+        </a>
+        <a href="settings.html" class="nav-item active">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+    </aside>
+
+    <div class="main-wrapper">
+      <header class="header">
+        <div class="header__left"></div>
+        <div class="header__right">
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <i data-lucide="moon" style="width:20px;height:20px;" id="theme-icon"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="page-header">
+          <h1 class="page-title">Store Settings</h1>
+          <button class="btn btn-primary" id="btn-save-settings">
+            <i data-lucide="save" style="width:16px;height:16px;"></i>
+            Save Settings
+          </button>
+        </div>
+
+        <form id="settings-form">
+          <div class="grid-2">
+            <!-- General -->
+            <div class="card card-body">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">General Information</h2>
+              <div class="form-group">
+                <label class="form-label" for="s-brand">Brand Name</label>
+                <input type="text" id="s-brand" class="form-control" value="Filorae">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="s-email">Contact Email</label>
+                <input type="email" id="s-email" class="form-control" value="hello@filorae.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="s-phone">Business Phone</label>
+                <input type="text" id="s-phone" class="form-control" placeholder="+91 XXXXXXXXXX">
+              </div>
+            </div>
+
+            <!-- Social & Links -->
+            <div class="card card-body">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">Social & Links</h2>
+              <div class="form-group">
+                <label class="form-label" for="s-ig">Instagram Username</label>
+                <input type="text" id="s-ig" class="form-control" value="_filorae_">
+                <small style="color:var(--text-tertiary);font-size:var(--text-xs);">Without the @</small>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="s-iglink">Instagram DM Link</label>
+                <input type="text" id="s-iglink" class="form-control" value="https://ig.me/m/_filorae_">
+                <small style="color:var(--text-tertiary);font-size:var(--text-xs);">Used for checkout routing</small>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="s-shipping">Default Shipping Time</label>
+                <input type="text" id="s-shipping" class="form-control" value="5-7 business days">
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </main>
+    </div>
+  </div>
+
+  <script type="module">
+    import { requireAdmin } from './js/services/auth.js';
+    import { db } from './js/config/firebase.js';
+    import { doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js';
+
+    requireAdmin();
+    if(window.lucide) window.lucide.createIcons();
+
+    // Load Settings
+    async function loadSettings() {
+      const snap = await getDoc(doc(db, 'settings', 'general'));
+      if(snap.exists()) {
+        const data = snap.data();
+        if(data.brandName) document.getElementById('s-brand').value = data.brandName;
+        if(data.email) document.getElementById('s-email').value = data.email;
+        if(data.phone) document.getElementById('s-phone').value = data.phone;
+        if(data.instagram) document.getElementById('s-ig').value = data.instagram;
+        if(data.instagramDMLink) document.getElementById('s-iglink').value = data.instagramDMLink;
+        if(data.shippingTime) document.getElementById('s-shipping').value = data.shippingTime;
+      }
+    }
+    loadSettings();
+
+    // Save Settings
+    document.getElementById('btn-save-settings').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-save-settings');
+      btn.innerHTML = `<span class="spinner" style="width:14px;height:14px;border-width:2px;border-color:white;border-top-color:transparent;display:inline-block;margin-right:8px;"></span> Saving...`;
+      
+      const data = {
+        brandName: document.getElementById('s-brand').value,
+        email: document.getElementById('s-email').value,
+        phone: document.getElementById('s-phone').value,
+        instagram: document.getElementById('s-ig').value,
+        instagramDMLink: document.getElementById('s-iglink').value,
+        shippingTime: document.getElementById('s-shipping').value,
+      };
+
+      try {
+        await setDoc(doc(db, 'settings', 'general'), data);
+        alert('Settings saved successfully!');
+      } catch (error) {
+        console.error(error);
+        alert('Failed to save settings.');
+      } finally {
+        btn.innerHTML = `<i data-lucide="save" style="width:16px;height:16px;"></i> Save Settings`;
+        if(window.lucide) window.lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Filorae Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .product-list-filters {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+  </style>
+  <script>
+    (function() {
+      const saved = localStorage.getItem('filorae-admin-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <i data-lucide="scissors" style="width:24px;height:24px;"></i>
+          filörae admin
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-section-title">Overview</div>
+        <a href="index.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-section-title">Store Management</div>
+        <a href="products.html" class="nav-item active">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="categories.html" class="nav-item">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          Categories
+        </a>
+
+        <div class="nav-section-title">Content</div>
+        <a href="homepage.html" class="nav-item">
+          <i data-lucide="layout" style="width:18px;height:18px;"></i>
+          Homepage
+        </a>
+        <a href="testimonials.html" class="nav-item">
+          <i data-lucide="message-square-heart" style="width:18px;height:18px;"></i>
+          Testimonials
+        </a>
+
+        <div class="nav-section-title">System</div>
+        <a href="users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;height:18px;"></i>
+          Users
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <!-- Header -->
+      <header class="header">
+        <div class="header__left"></div>
+        <div class="header__right">
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <i data-lucide="moon" style="width:20px;height:20px;" id="theme-icon"></i>
+          </button>
+          <button class="icon-btn" id="logout-btn" style="color:var(--color-error);">
+            <i data-lucide="log-out" style="width:20px;height:20px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="content">
+        <div class="page-header">
+          <h1 class="page-title">Products</h1>
+          <a href="product-form.html" class="btn btn-primary">
+            <i data-lucide="plus" style="width:16px;height:16px;"></i>
+            Add Product
+          </a>
+        </div>
+
+        <div class="card card-body">
+          <div class="product-list-filters">
+            <div style="flex:1;min-width:250px;position:relative;">
+              <i data-lucide="search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-tertiary);"></i>
+              <input type="text" id="search-input" class="form-control" placeholder="Search products..." style="padding-left:36px;">
+            </div>
+            <select id="category-filter" class="form-control" style="width:200px;">
+              <option value="">All Categories</option>
+              <!-- Populated via JS -->
+            </select>
+            <select id="stock-filter" class="form-control" style="width:150px;">
+              <option value="">All Status</option>
+              <option value="in_stock">In Stock</option>
+              <option value="out_of_stock">Out of Stock</option>
+            </select>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="products-table">
+              <thead>
+                <tr>
+                  <th style="width:60px;">Image</th>
+                  <th>Product Details</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-tbody">
+                <tr><td colspan="6" style="text-align:center;padding:2rem;">Loading products...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/products.js"></script>
+</body>
+</html>
+

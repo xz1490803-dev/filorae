@@ -1,0 +1,340 @@
+/* ============================================
+   FILORAE — Layout System
+   ============================================ */
+
+/* ---- Container ---- */
+.container {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.container-sm {
+  max-width: var(--container-sm);
+}
+
+.container-md {
+  max-width: var(--container-md);
+}
+
+.container-lg {
+  max-width: var(--container-lg);
+}
+
+.container-2xl {
+  max-width: var(--container-2xl);
+}
+
+.container-fluid {
+  max-width: 100%;
+}
+
+/* ---- Section Spacing ---- */
+.section {
+  padding: var(--space-16) 0;
+}
+
+.section-sm {
+  padding: var(--space-10) 0;
+}
+
+.section-lg {
+  padding: var(--space-24) 0;
+}
+
+.section-alt {
+  background-color: var(--color-bg-alt);
+}
+
+.section-white {
+  background-color: var(--white);
+}
+
+.section-sage {
+  background-color: var(--sage-50);
+}
+
+/* ---- Grid System ---- */
+.grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+/* Auto-fit responsive grids */
+.grid-auto-sm {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.grid-auto-md {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.grid-auto-lg {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+/* ---- Flex Utilities ---- */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.items-stretch {
+  align-items: stretch;
+}
+
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+.gap-10 { gap: var(--space-10); }
+.gap-12 { gap: var(--space-12); }
+
+/* ---- Two Column Layout (e.g., Shop sidebar + grid) ---- */
+.layout-sidebar {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-8);
+}
+
+/* ---- Product Grid ---- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-6);
+}
+
+/* ---- Page Header ---- */
+.page-header {
+  padding: var(--space-12) 0;
+  text-align: center;
+  background-color: var(--sage-50);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.page-header .breadcrumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.page-header .breadcrumb a:hover {
+  color: var(--color-primary);
+}
+
+.page-header .breadcrumb .separator {
+  color: var(--color-text-muted);
+}
+
+/* ---- Masonry Grid (for Instagram gallery) ---- */
+.masonry-grid {
+  columns: 4;
+  column-gap: var(--space-4);
+}
+
+.masonry-grid > * {
+  break-inside: avoid;
+  margin-bottom: var(--space-4);
+}
+
+/* ---- Responsive Breakpoints ---- */
+
+/* Small phones */
+@media (max-width: 479px) {
+  :root {
+    --container-padding: var(--space-4);
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .grid-5 {
+    grid-template-columns: 1fr;
+  }
+
+  .layout-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .masonry-grid {
+    columns: 2;
+  }
+
+  .section {
+    padding: var(--space-10) 0;
+  }
+
+  .section-lg {
+    padding: var(--space-16) 0;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Large phones */
+@media (min-width: 480px) and (max-width: 767px) {
+  :root {
+    --container-padding: var(--space-5);
+  }
+
+  .grid-3,
+  .grid-4,
+  .grid-5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .layout-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .masonry-grid {
+    columns: 2;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --container-padding: var(--space-6);
+  }
+
+  .grid-4,
+  .grid-5 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .masonry-grid {
+    columns: 3;
+  }
+
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+/* Laptops */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  :root {
+    --container-padding: var(--space-8);
+  }
+
+  .grid-5 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .hide-laptop {
+    display: none !important;
+  }
+}
+
+/* Desktops */
+@media (min-width: 1280px) {
+  :root {
+    --container-padding: var(--space-8);
+  }
+
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/* Show utilities */
+.show-mobile {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .show-mobile {
+    display: block !important;
+  }
+}
+
+.show-tablet {
+  display: none !important;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .show-tablet {
+    display: block !important;
+  }
+}
+
+.show-desktop {
+  display: none !important;
+}
+
+@media (min-width: 1024px) {
+  .show-desktop {
+    display: block !important;
+  }
+}

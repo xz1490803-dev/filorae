@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — Filorae | Frequently Asked Questions</title>
+  <meta name="description" content="Find answers to common questions about ordering, delivery, custom designs, and more at Filorae.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/pages/home.css">
+  <link rel="stylesheet" href="css/pages/about.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "How do I place an order?", "acceptedAnswer": {"@type": "Answer", "text": "Browse our products, click 'Order on Instagram', fill in your details, and send the message directly to our Instagram DM."}},
+      {"@type": "Question", "name": "How long does delivery take?", "acceptedAnswer": {"@type": "Answer", "text": "Handmade items typically take 5-7 business days. Custom orders may take 7-14 days."}},
+      {"@type": "Question", "name": "Can I request custom designs?", "acceptedAnswer": {"@type": "Answer", "text": "Absolutely! Send us a message on Instagram with your idea and we'll work together to bring it to life."}},
+      {"@type": "Question", "name": "What payment methods do you accept?", "acceptedAnswer": {"@type": "Answer", "text": "We accept UPI, bank transfer, and cash on delivery for select locations."}}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <div class="page-wrapper">
+    <main id="main-content" class="static-page">
+      <div class="container">
+        <div class="static-page__content">
+          <div class="section-header" style="margin-bottom:var(--space-10);">
+            <span class="section-subtitle">Help Center</span>
+            <h1 class="section-title">Frequently Asked Questions</h1>
+          </div>
+
+          <div class="accordion" id="faq-accordion" style="max-width:700px;margin:0 auto;">
+            <!-- Loaded from Firestore or defaults shown -->
+          </div>
+
+          <div class="text-center mt-10">
+            <p style="color:var(--color-text-light);margin-bottom:var(--space-4);">Still have questions?</p>
+            <a href="contact.html" class="btn btn-primary">
+              <i data-lucide="message-circle" style="width:16px;height:16px;"></i>
+              Contact Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module">
+    import { initApp, refreshUI } from './js/app.js';
+    import { getFAQs } from './firebase/firestore.js';
+    import { sanitize } from './js/utils/helpers.js';
+
+    initApp();
+
+    async function loadFAQs() {
+      const faqs = await getFAQs();
+      const container = document.getElementById('faq-accordion');
+      if (!container) return;
+
+      const items = faqs.length > 0 ? faqs : [
+        { question: 'How do I place an order?', answer: 'Browse our products, click "Order on Instagram", fill in your details, and send the message directly to our Instagram DM. We\'ll confirm your order within 24 hours!' },
+        { question: 'How long does delivery take?', answer: 'Since each item is handmade, delivery typically takes 5-7 business days. Custom orders may take 7-14 days depending on complexity.' },
+        { question: 'Can I request custom designs?', answer: 'Absolutely! We love creating custom pieces. Send us a message on Instagram with your idea and we\'ll work together to bring it to life.' },
+        { question: 'What payment methods do you accept?', answer: 'We accept UPI, bank transfer, and cash on delivery for select locations. Payment details will be shared after order confirmation.' },
+        { question: 'Do you ship internationally?', answer: 'Currently we ship pan-India. International shipping is coming soon! Follow us on Instagram for updates.' },
+        { question: 'Can I return or exchange an item?', answer: 'Since all items are handmade, we don\'t accept returns. However, if you receive a damaged product, please contact us within 48 hours with photos and we\'ll make it right.' },
+        { question: 'How do I track my order?', answer: 'Once your order is shipped, we\'ll share the tracking details via Instagram DM or WhatsApp.' },
+        { question: 'Do you offer gift wrapping?', answer: 'Yes! All our products come in beautiful packaging, ready to gift. You can also add a personalized note.' },
+      ];
+
+      items.forEach(faq => {
+        const item = document.createElement('div');
+        item.className = 'accordion-item';
+        item.innerHTML = `
+          <button class="accordion-header" aria-expanded="false">
+            <span class="accordion-title">${sanitize(faq.question)}</span>
+            <i data-lucide="chevron-down" class="accordion-icon" style="width:18px;height:18px;"></i>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-content">${sanitize(faq.answer)}</div>
+          </div>
+        `;
+
+        item.querySelector('.accordion-header').addEventListener('click', () => {
+          const isActive = item.classList.contains('active');
+          container.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+          if (!isActive) item.classList.add('active');
+        });
+
+        container.appendChild(item);
+      });
+
+      refreshUI();
+    }
+
+    loadFAQs();
+  </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Filorae</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-surface-hover);
+      padding: var(--space-4);
+    }
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      padding: var(--space-8);
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: var(--space-8);
+    }
+    .login-logo {
+      font-size: var(--text-2xl);
+      font-weight: var(--fw-bold);
+      color: var(--brand-primary);
+      margin-bottom: var(--space-2);
+    }
+    .login-subtitle {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+    }
+    .alert {
+      padding: var(--space-3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-4);
+      display: none;
+    }
+    .alert.error {
+      background-color: var(--color-error-bg);
+      color: var(--color-error-text);
+      display: block;
+    }
+  </style>
+  <script>
+    (function() {
+      const saved = localStorage.getItem('filorae-admin-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="card login-card">
+      <div class="login-header">
+        <div class="login-logo">filörae admin</div>
+        <p class="login-subtitle">Sign in to manage your store</p>
+      </div>
+
+      <div id="error-msg" class="alert"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="email">Admin Email</label>
+          <input type="email" id="email" class="form-control" placeholder="admin@filorae.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="submit-btn">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { loginAdmin } from './js/services/auth.js';
+    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.7.3/firebase-auth.js';
+    import { auth } from './js/config/firebase.js';
+
+    // Redirect if already logged in
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Technically we should check isAdmin here too, but requireAdmin() will handle it on index.html
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Check URL for unauthorized error
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorEl = document.getElementById('error-msg');
+    if (urlParams.get('error') === 'unauthorized') {
+      errorEl.textContent = 'Access Denied: Administrator privileges required.';
+      errorEl.classList.add('error');
+    }
+
+    // Handle Login
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('submit-btn');
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      errorEl.classList.remove('error');
+
+      const result = await loginAdmin(email, password);
+      
+      if (result.success) {
+        btn.textContent = 'Success!';
+        window.location.href = 'index.html';
+      } else {
+        errorEl.textContent = result.error;
+        errorEl.classList.add('error');
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    });
+  </script>
+</body>
+</html>
+

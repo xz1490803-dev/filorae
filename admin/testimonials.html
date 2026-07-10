@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testimonials — Filorae Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('filorae-admin-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <i data-lucide="scissors" style="width:24px;height:24px;"></i>
+          filörae admin
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-section-title">Overview</div>
+        <a href="index.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-section-title">Store Management</div>
+        <a href="products.html" class="nav-item">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="categories.html" class="nav-item">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          Categories
+        </a>
+        
+        <div class="nav-section-title">Content</div>
+        <a href="homepage.html" class="nav-item">
+          <i data-lucide="layout" style="width:18px;height:18px;"></i>
+          Homepage
+        </a>
+        <a href="testimonials.html" class="nav-item active">
+          <i data-lucide="message-square-heart" style="width:18px;height:18px;"></i>
+          Testimonials
+        </a>
+
+        <div class="nav-section-title">System</div>
+        <a href="users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;height:18px;"></i>
+          Users
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+    </aside>
+
+    <div class="main-wrapper">
+      <header class="header">
+        <div class="header__left"></div>
+        <div class="header__right">
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <i data-lucide="moon" style="width:20px;height:20px;" id="theme-icon"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="page-header">
+          <h1 class="page-title">Testimonials</h1>
+          <a href="testimonial-form.html" class="btn btn-primary">
+            <i data-lucide="plus" style="width:16px;height:16px;"></i>
+            Add Testimonial
+          </a>
+        </div>
+
+        <div class="card card-body">
+          <div class="product-list-filters" style="display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+            <div style="flex:1;min-width:250px;position:relative;">
+              <i data-lucide="search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-tertiary);"></i>
+              <input type="text" id="search-input" class="form-control" placeholder="Search by name, handle, or review..." style="padding-left:36px;">
+            </div>
+            <select id="featured-filter" class="form-control" style="width:150px;">
+              <option value="">All Status</option>
+              <option value="featured">Featured</option>
+              <option value="standard">Standard</option>
+            </select>
+            <select id="rating-filter" class="form-control" style="width:150px;">
+              <option value="">All Ratings</option>
+              <option value="5">5 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="2">2 Stars</option>
+              <option value="1">1 Star</option>
+            </select>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table" id="testimonials-table">
+              <thead>
+                <tr>
+                  <th style="width:60px;">Photo</th>
+                  <th>Customer</th>
+                  <th>Review</th>
+                  <th>Rating</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="testimonials-tbody">
+                <tr><td colspan="6" style="text-align:center;padding:2rem;">Loading testimonials...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/testimonials.js"></script>
+</body>
+</html>
+

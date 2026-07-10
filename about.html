@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Filorae | Our Story</title>
+  <meta name="description" content="Learn about Filorae — our passion for handmade crochet, our story, and our commitment to quality craftsmanship.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/pages/home.css">
+  <link rel="stylesheet" href="css/pages/about.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <main id="main-content" class="about-page">
+      <!-- Hero -->
+      <section class="about-hero section">
+        <div class="container about-hero__content">
+          <div class="animate-on-scroll fade-up">
+            <span class="section-subtitle">Our Story</span>
+            <h1 style="font-family:var(--font-heading);font-size:var(--text-5xl);color:var(--color-heading);margin-bottom:var(--space-6);">Handmade with <span style="color:var(--blush-400);font-style:italic;">Love</span></h1>
+            <p class="text-lead">Filorae was born from a passion for crochet and a desire to create beautiful, meaningful gifts. Every piece we make carries a piece of our heart.</p>
+          </div>
+          <div class="about-hero__image animate-on-scroll scale-in">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='625' fill='%23d4e4d4'%3E%3Crect width='500' height='625' rx='32'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%235C7A5C' font-size='18' font-family='serif'%3EFilorae Story%3C/text%3E%3C/svg%3E" alt="Filorae artisan crafting" width="500" height="625">
+          </div>
+        </div>
+      </section>
+
+      <!-- Story -->
+      <section class="section about-story">
+        <div class="container">
+          <div class="about-story__content animate-on-scroll fade-up">
+            <p>What started as a hobby during lockdown has blossomed into a small business driven by creativity and care. We believe that handmade gifts carry a warmth that mass-produced items simply cannot match.</p>
+            <br>
+            <p>Every keychain, bouquet, and amigurumi that leaves our hands has been crafted stitch by stitch, with attention to every detail. We use premium quality yarn and materials because we believe you deserve nothing less.</p>
+            <br>
+            <p>At Filorae, we don't just make products — we create memories, one stitch at a time. ♥</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Values -->
+      <section class="section section-sage" aria-labelledby="values-title">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-subtitle">What We Stand For</span>
+            <h2 class="section-title" id="values-title">Our Values</h2>
+          </div>
+          <div class="about-values__grid">
+            <div class="about-value-card animate-on-scroll fade-up">
+              <div class="about-value-card__icon"><i data-lucide="heart" style="width:24px;height:24px;"></i></div>
+              <h3>Made with Love</h3>
+              <p>Every product is handcrafted with care and attention. We put our heart into every stitch.</p>
+            </div>
+            <div class="about-value-card animate-on-scroll fade-up">
+              <div class="about-value-card__icon"><i data-lucide="leaf" style="width:24px;height:24px;"></i></div>
+              <h3>Sustainable</h3>
+              <p>We prioritize eco-friendly materials and minimal waste in our crafting process.</p>
+            </div>
+            <div class="about-value-card animate-on-scroll fade-up">
+              <div class="about-value-card__icon"><i data-lucide="sparkles" style="width:24px;height:24px;"></i></div>
+              <h3>Unique & Personal</h3>
+              <p>No two handmade pieces are exactly alike. Each gift is as unique as the person receiving it.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script type="module">
+    import { initApp } from './js/app.js';
+    initApp();
+  </script>
+</body>
+</html>

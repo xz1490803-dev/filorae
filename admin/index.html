@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Filorae Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('filorae-admin-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <i data-lucide="scissors" style="width:24px;height:24px;"></i>
+          filörae admin
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-section-title">Overview</div>
+        <a href="index.html" class="nav-item active">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-section-title">Store Management</div>
+        <a href="products.html" class="nav-item">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="categories.html" class="nav-item">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          Categories
+        </a>
+
+        <div class="nav-section-title">Content</div>
+        <a href="homepage.html" class="nav-item">
+          <i data-lucide="layout" style="width:18px;height:18px;"></i>
+          Homepage
+        </a>
+        <a href="testimonials.html" class="nav-item">
+          <i data-lucide="message-square-heart" style="width:18px;height:18px;"></i>
+          Testimonials
+        </a>
+
+        <div class="nav-section-title">System</div>
+        <a href="users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;height:18px;"></i>
+          Users
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <!-- Header -->
+      <header class="header">
+        <div class="header__left">
+          <div style="position:relative;width:300px;">
+            <i data-lucide="search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-tertiary);"></i>
+            <input type="text" class="form-control" placeholder="Search orders, products..." style="padding-left:36px;border-radius:var(--radius-full);background-color:var(--bg-surface-hover);border:none;">
+          </div>
+        </div>
+        <div class="header__right">
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <i data-lucide="moon" style="width:20px;height:20px;" id="theme-icon"></i>
+          </button>
+          <div class="user-profile">
+            <div class="user-avatar" id="admin-user-initial">A</div>
+            <span style="font-weight:var(--fw-medium);font-size:var(--text-sm);" id="admin-user-name">Admin</span>
+          </div>
+          <button class="icon-btn" id="logout-btn" aria-label="Logout" style="color:var(--color-error);">
+            <i data-lucide="log-out" style="width:20px;height:20px;"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="content">
+        <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;">
+          <h1 class="page-title">Dashboard Overview</h1>
+          <div style="display:flex;gap:var(--space-2);">
+            <a href="../index.html" target="_blank" class="btn btn-outline">
+              <i data-lucide="external-link" style="width:16px;height:16px;"></i>
+              View Live Site
+            </a>
+          </div>
+        </div>
+
+        <!-- Stock Overview Grid -->
+        <div class="grid-3" id="category-stock-grid" style="margin-bottom:var(--space-8);">
+          <div style="grid-column:1/-1;text-align:center;padding:var(--space-8);color:var(--text-tertiary);">
+            <i data-lucide="loader" class="spin" style="width:24px;height:24px;margin-bottom:8px;"></i>
+            <p>Calculating stock levels...</p>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+
+
+  <script type="module" src="js/pages/dashboard.js"></script>
+</body>
+</html>
+

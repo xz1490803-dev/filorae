@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage Content — Filorae Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('filorae-admin-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <i data-lucide="scissors" style="width:24px;height:24px;"></i>
+          filörae admin
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-section-title">Overview</div>
+        <a href="index.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-section-title">Store Management</div>
+        <a href="products.html" class="nav-item">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="categories.html" class="nav-item">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          Categories
+        </a>
+
+        <div class="nav-section-title">Content</div>
+        <a href="homepage.html" class="nav-item active">
+          <i data-lucide="layout" style="width:18px;height:18px;"></i>
+          Homepage
+        </a>
+        <a href="testimonials.html" class="nav-item">
+          <i data-lucide="message-square-heart" style="width:18px;height:18px;"></i>
+          Testimonials
+        </a>
+
+        <div class="nav-section-title">System</div>
+        <a href="users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;height:18px;"></i>
+          Users
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+    </aside>
+
+    <div class="main-wrapper">
+      <header class="header">
+        <div class="header__left"></div>
+        <div class="header__right">
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <i data-lucide="moon" style="width:20px;height:20px;" id="theme-icon"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="page-header">
+          <h1 class="page-title">Homepage Control</h1>
+        </div>
+
+        <div class="card card-body" style="max-width:800px;margin-bottom:var(--space-6);">
+          <h2 class="card-title" style="margin-bottom:var(--space-4);">Hero Banner</h2>
+          <form id="hero-form">
+            <div class="form-group">
+              <label class="form-label">Headline (HTML supported)</label>
+              <textarea id="hero-title" class="form-control" rows="3" placeholder="e.g. Crafted with <span class='accent'>Love</span>"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subtitle</label>
+              <textarea id="hero-subtitle" class="form-control" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="btn-save-hero">Update Hero Section</button>
+          </form>
+        </div>
+
+        <div class="card card-body" style="max-width:800px;">
+          <h2 class="card-title" style="margin-bottom:var(--space-4);">Notice Bar (Top of screen)</h2>
+          <form id="notice-form">
+            <div class="form-group" style="display:flex;align-items:center;gap:var(--space-2);">
+              <input type="checkbox" id="notice-active">
+              <label for="notice-active" style="font-weight:var(--fw-medium);">Enable Notice Bar</label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message</label>
+              <input type="text" id="notice-text" class="form-control" placeholder="e.g. Free shipping on orders over ₹1000!">
+            </div>
+            <button type="submit" class="btn btn-primary" id="btn-save-notice">Update Notice Bar</button>
+          </form>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script type="module">
+    import { requireAdmin } from './js/services/auth.js';
+    import { db } from './js/config/firebase.js';
+    import { doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js';
+
+    requireAdmin();
+    if(window.lucide) window.lucide.createIcons();
+
+    async function loadData() {
+      try {
+        // Hero
+        const heroDoc = await getDoc(doc(db, 'banners', 'hero-1'));
+        if(heroDoc.exists()) {
+          document.getElementById('hero-title').value = heroDoc.data().title || '';
+          document.getElementById('hero-subtitle').value = heroDoc.data().subtitle || '';
+        }
+
+        // Notice
+        const noticeDoc = await getDoc(doc(db, 'settings', 'notice-bar'));
+        if(noticeDoc.exists()) {
+          document.getElementById('notice-active').checked = !!noticeDoc.data().active;
+          document.getElementById('notice-text').value = noticeDoc.data().text || '';
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    loadData();
+
+    document.getElementById('hero-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save-hero');
+      btn.textContent = 'Saving...';
+      await setDoc(doc(db, 'banners', 'hero-1'), {
+        title: document.getElementById('hero-title').value,
+        subtitle: document.getElementById('hero-subtitle').value,
+        active: true,
+        order: 1
+      }, { merge: true });
+      localStorage.removeItem('filo_v2_banners');
+      btn.textContent = 'Update Hero Section';
+      alert('Hero updated!');
+    });
+
+    document.getElementById('notice-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save-notice');
+      btn.textContent = 'Saving...';
+      await setDoc(doc(db, 'settings', 'notice-bar'), {
+        active: document.getElementById('notice-active').checked,
+        text: document.getElementById('notice-text').value
+      }, { merge: true });
+      localStorage.removeItem('filo_v2_settings_notice');
+      btn.textContent = 'Update Notice Bar';
+      alert('Notice bar updated!');
+    });
+  </script>
+</body>
+</html>
+

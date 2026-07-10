@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testimonial Form — Filorae Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .image-preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .image-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+      border: 1px solid var(--border-color);
+    }
+    .image-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .image-remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .image-remove:hover {
+      background: var(--color-error);
+    }
+    .drag-drop-zone {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-tertiary);
+      transition: all 0.2s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .drag-drop-zone:hover, .drag-drop-zone.dragover {
+      border-color: var(--color-primary);
+      background: var(--bg-secondary);
+      color: var(--color-primary);
+    }
+  </style>
+  <script>
+    (function() {
+      const saved = localStorage.getItem('filorae-admin-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <i data-lucide="scissors" style="width:24px;height:24px;"></i>
+          filörae admin
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-section-title">Overview</div>
+        <a href="index.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-section-title">Store Management</div>
+        <a href="products.html" class="nav-item">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="categories.html" class="nav-item">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          Categories
+        </a>
+        
+        <div class="nav-section-title">Content</div>
+        <a href="homepage.html" class="nav-item">
+          <i data-lucide="layout" style="width:18px;height:18px;"></i>
+          Homepage
+        </a>
+        <a href="testimonials.html" class="nav-item active">
+          <i data-lucide="message-square-heart" style="width:18px;height:18px;"></i>
+          Testimonials
+        </a>
+
+        <div class="nav-section-title">System</div>
+        <a href="users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;height:18px;"></i>
+          Users
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+    </aside>
+
+    <div class="main-wrapper">
+      <header class="header">
+        <div class="header__left">
+          <a href="testimonials.html" class="btn btn-secondary" style="display:flex;align-items:center;gap:4px;">
+            <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
+            Back
+          </a>
+        </div>
+        <div class="header__right">
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <i data-lucide="moon" style="width:20px;height:20px;" id="theme-icon"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="page-header">
+          <h1 class="page-title" id="page-title">Add Testimonial</h1>
+          <button type="submit" form="testimonial-form" class="btn btn-primary" id="btn-save">
+            Save Testimonial
+          </button>
+        </div>
+
+        <form id="testimonial-form" class="product-form-grid">
+          <!-- Left Column -->
+          <div style="display:flex;flex-direction:column;gap:var(--space-6);">
+            <!-- Basic Details -->
+            <div class="card card-body">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">Review Details</h2>
+              
+              <div class="form-group">
+                <label class="form-label" for="t-name">Customer Name *</label>
+                <input type="text" id="t-name" class="form-control" required placeholder="e.g. Priya S.">
+              </div>
+
+              <div class="form-group" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+                <div>
+                  <label class="form-label" for="t-igHandle">Instagram Handle</label>
+                  <input type="text" id="t-igHandle" class="form-control" placeholder="e.g. priya_crochet">
+                </div>
+                <div>
+                  <label class="form-label" for="t-rating">Rating (1-5) *</label>
+                  <input type="number" id="t-rating" class="form-control" min="1" max="5" value="5" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="t-product">Product Purchased</label>
+                <input type="text" id="t-product" class="form-control" placeholder="e.g. Strawberry Keychain">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="t-text">Review Text *</label>
+                <textarea id="t-text" class="form-control" rows="4" required placeholder="What did they say?"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="t-igUrl">Instagram Post/Reel URL</label>
+                <input type="url" id="t-igUrl" class="form-control" placeholder="https://instagram.com/p/...">
+              </div>
+            </div>
+            
+            <!-- Photo Upload -->
+            <div class="card card-body">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">Customer Photo</h2>
+              <p style="font-size:var(--text-sm);color:var(--text-tertiary);margin-bottom:var(--space-4);">
+                Upload a photo provided by the customer or screenshot of their post. (Optional)
+              </p>
+              
+              <input type="file" id="image-upload" accept="image/jpeg, image/png, image/webp" style="display:none;">
+              <div class="drag-drop-zone" id="drop-zone">
+                <i data-lucide="upload-cloud" style="width:32px;height:32px;"></i>
+                <div style="font-weight:var(--fw-medium);">Click or drag image here</div>
+                <div style="font-size:var(--text-sm);">PNG, JPG, WebP up to 5MB</div>
+              </div>
+              
+              <div class="image-preview-container" id="image-preview-container">
+                <!-- Preview items inserted here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div style="display:flex;flex-direction:column;gap:var(--space-6);">
+            <!-- Status & Visibility -->
+            <div class="card card-body">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">Status</h2>
+              
+              <div class="form-group">
+                <label class="form-label" for="t-date">Review Date</label>
+                <input type="date" id="t-date" class="form-control" required>
+              </div>
+
+              <hr style="border:none;border-top:1px solid var(--border-color);margin:1.5rem 0;">
+
+              <div class="form-group" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
+                <input type="checkbox" id="t-featured" style="width:16px;height:16px;">
+                <label for="t-featured" style="font-weight:var(--fw-medium);cursor:pointer;">
+                  Featured Testimonial
+                  <div style="font-size:var(--text-xs);color:var(--text-tertiary);font-weight:var(--fw-normal);">
+                    Show this on the homepage carousel.
+                  </div>
+                </label>
+              </div>
+
+              <div class="form-group" style="display:flex;align-items:center;gap:0.5rem;">
+                <input type="checkbox" id="t-verified" style="width:16px;height:16px;" checked>
+                <label for="t-verified" style="font-weight:var(--fw-medium);cursor:pointer;">
+                  Verified Purchase
+                  <div style="font-size:var(--text-xs);color:var(--text-tertiary);font-weight:var(--fw-normal);">
+                    Adds a verified badge next to their name.
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/testimonial-form.js"></script>
+</body>
+</html>

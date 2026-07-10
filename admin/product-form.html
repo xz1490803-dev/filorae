@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Product — Filorae Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .form-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--space-6);
+    }
+    @media (max-width: 1024px) {
+      .form-layout { grid-template-columns: 1fr; }
+    }
+    
+    /* Image Uploader */
+    .image-uploader {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background-color: var(--bg-base);
+    }
+    .image-uploader:hover, .image-uploader.dragover {
+      border-color: var(--brand-primary);
+      background-color: rgba(92, 122, 92, 0.05);
+    }
+    .image-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: var(--space-4);
+      margin-top: var(--space-4);
+    }
+    .image-preview-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+    .image-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .image-preview-item .remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .image-preview-item .remove-btn:hover {
+      background: var(--color-error);
+    }
+  </style>
+  <script>
+    (function() {
+      const saved = localStorage.getItem('filorae-admin-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar (Same as products.html) -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <i data-lucide="scissors" style="width:24px;height:24px;"></i>
+          filörae admin
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-section-title">Overview</div>
+        <a href="index.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-section-title">Store Management</div>
+        <a href="products.html" class="nav-item active">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="categories.html" class="nav-item">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          Categories
+        </a>
+
+        <div class="nav-section-title">Content</div>
+        <a href="homepage.html" class="nav-item">
+          <i data-lucide="layout" style="width:18px;height:18px;"></i>
+          Homepage
+        </a>
+        <a href="testimonials.html" class="nav-item">
+          <i data-lucide="message-square-heart" style="width:18px;height:18px;"></i>
+          Testimonials
+        </a>
+
+        <div class="nav-section-title">System</div>
+        <a href="users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;height:18px;"></i>
+          Users
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <header class="header">
+        <div class="header__left">
+          <a href="products.html" class="btn btn-outline" style="padding:0.5rem;"><i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Back to Products</a>
+        </div>
+        <div class="header__right">
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <i data-lucide="moon" style="width:20px;height:20px;" id="theme-icon"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="page-header">
+          <h1 class="page-title" id="page-title">Add New Product</h1>
+          <div>
+            <button class="btn btn-outline" id="btn-cancel" style="margin-right:var(--space-2);">Cancel</button>
+            <button class="btn btn-primary" id="btn-save">
+              <i data-lucide="save" style="width:16px;height:16px;"></i>
+              Save Product
+            </button>
+          </div>
+        </div>
+
+        <form id="product-form" class="form-layout">
+          <!-- Left Column (Main Info) -->
+          <div class="form-col">
+            <div class="card card-body" style="margin-bottom:var(--space-6);">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">Basic Information</h2>
+              <div class="form-group">
+                <label class="form-label" for="p-name">Product Name *</label>
+                <input type="text" id="p-name" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="p-desc">Description</label>
+                <textarea id="p-desc" class="form-control" rows="6"></textarea>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="p-materials">Materials</label>
+                  <input type="text" id="p-materials" class="form-control" placeholder="e.g. 100% Cotton Yarn">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-dimensions">Dimensions</label>
+                  <input type="text" id="p-dimensions" class="form-control" placeholder="e.g. 10cm x 5cm">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="p-care">Care Instructions</label>
+                <input type="text" id="p-care" class="form-control">
+              </div>
+            </div>
+
+            <div class="card card-body" style="margin-bottom:var(--space-6);">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">Images</h2>
+              <p style="font-size:var(--text-xs);color:var(--text-tertiary);margin-bottom:var(--space-4);">Images will be automatically compressed before upload.</p>
+              
+              <div class="image-uploader" id="image-dropzone">
+                <i data-lucide="image-plus" style="width:32px;height:32px;color:var(--text-tertiary);margin-bottom:var(--space-2);"></i>
+                <p style="font-weight:var(--fw-medium);">Click or drag images here</p>
+                <p style="font-size:var(--text-xs);color:var(--text-tertiary);">Up to 5 images (JPEG, PNG, WEBP)</p>
+                <input type="file" id="image-input" multiple accept="image/*" style="display:none;">
+              </div>
+              <div class="image-preview-grid" id="image-preview-container">
+                <!-- Previews go here -->
+              </div>
+            </div>
+
+            <div class="card card-body">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">Pricing & Stock</h2>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="p-price">Price (₹) *</label>
+                  <input type="number" id="p-price" class="form-control" min="0" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-oldprice">Compare at Price (₹)</label>
+                  <input type="number" id="p-oldprice" class="form-control" min="0">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="p-stock">Status</label>
+                  <select id="p-stock" class="form-control">
+                    <option value="true">In Stock</option>
+                    <option value="false">Out of Stock</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="p-shipping-type">Shipping</label>
+                  <select id="p-shipping-type" class="form-control">
+                    <option value="free">Free Shipping</option>
+                    <option value="charge">Shipping Charge</option>
+                  </select>
+                </div>
+                <div class="form-group" id="shipping-charge-group" style="display: none;">
+                  <label class="form-label" for="p-shipping-charge">Shipping Charge (₹)</label>
+                  <input type="number" id="p-shipping-charge" class="form-control" min="0">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="p-delivery">Estimated Delivery Time</label>
+                <input type="text" id="p-delivery" class="form-control" value="5-7 business days">
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column (Organization & SEO) -->
+          <div class="form-col">
+            <div class="card card-body" style="margin-bottom:var(--space-6);">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">Organization</h2>
+              <div class="form-group">
+                <label class="form-label" for="p-category">Category *</label>
+                <select id="p-category" class="form-control" required>
+                  <option value="">Select a category</option>
+                  <!-- Populated by JS -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="p-badge">Badge</label>
+                <select id="p-badge" class="form-control">
+                  <option value="">None</option>
+                  <option value="best-seller">Best Seller</option>
+                  <option value="trending">Trending</option>
+                  <option value="new">New Arrival</option>
+                  <option value="limited">Limited Edition</option>
+                </select>
+              </div>
+              <div class="form-group" style="display:flex;gap:var(--space-2);align-items:center;">
+                <input type="checkbox" id="p-featured">
+                <label for="p-featured" style="font-size:var(--text-sm);font-weight:var(--fw-medium);">Featured on Homepage</label>
+              </div>
+            </div>
+
+            <div class="card card-body">
+              <h2 class="card-title" style="margin-bottom:var(--space-4);">Search Engine Optimization</h2>
+              <div class="form-group">
+                <label class="form-label" for="p-slug">URL Slug *</label>
+                <input type="text" id="p-slug" class="form-control" required>
+                <small style="font-size:var(--text-xs);color:var(--text-tertiary);">Must be unique (e.g. strawberry-keychain)</small>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="p-tags">Tags (comma separated)</label>
+                <input type="text" id="p-tags" class="form-control" placeholder="cute, crochet, gift">
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/product-form.js"></script>
+</body>
+</html>
+

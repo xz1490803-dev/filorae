@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop — Filorae | Handmade Crochet Gifts</title>
+  <meta name="description" content="Browse our complete collection of handmade crochet gifts. Keychains, bouquets, amigurumi, accessories & more.">
+  <meta property="og:title" content="Shop — Filorae">
+  <meta property="og:description" content="Browse handmade crochet gifts. Each piece crafted with love.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/pages/home.css">
+  <link rel="stylesheet" href="css/pages/shop.css">
+</head>
+<body>
+  <div class="page-wrapper">
+    <main id="main-content">
+      <!-- Shop Header -->
+      <div class="shop-header">
+        <div class="container">
+          <nav class="product-breadcrumb" aria-label="Breadcrumb">
+            <a href="index.html">Home</a>
+            <span class="separator">/</span>
+            <span aria-current="page">Shop</span>
+          </nav>
+          <h1 class="shop-header__title">Our Products</h1>
+          <p class="shop-header__count" id="product-count">Loading...</p>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Active Filters -->
+        <div class="active-filters" id="active-filters"></div>
+
+        <div class="filters-overlay" id="filters-overlay"></div>
+        <div class="shop-layout">
+          <!-- Filters Sidebar -->
+          <aside class="filters-sidebar" id="filters-sidebar">
+            <div class="filters-header">
+              <h2 class="filters-title">Filters</h2>
+              <button class="filters-clear" id="clear-filters">Clear All</button>
+            </div>
+
+            <!-- Categories -->
+            <div class="filter-group">
+              <h3 class="filter-group__title">Category</h3>
+              <div class="filter-group__items" id="filter-categories">
+                <!-- Dynamically loaded -->
+              </div>
+            </div>
+
+            <!-- Price Range -->
+            <div class="filter-group">
+              <h3 class="filter-group__title">Price Range</h3>
+              <div class="price-range">
+                <input type="range" id="price-range" min="0" max="5000" value="5000" step="50">
+                <div class="price-range__values">
+                  <span>₹0</span>
+                  <span id="price-max-val">₹5,000</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stock -->
+            <div class="filter-group">
+              <h3 class="filter-group__title">Availability</h3>
+              <div class="filter-group__items">
+                <div class="filter-item">
+                  <div class="checkbox-group">
+                    <input type="checkbox" id="filter-instock">
+                    <label class="checkbox-label" for="filter-instock">In Stock Only</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!-- Products Area -->
+          <div>
+            <!-- Toolbar -->
+            <div class="shop-toolbar">
+              <div class="shop-toolbar__left">
+                <button class="btn btn-secondary btn-sm mobile-filter-btn" id="mobile-filter-btn">
+                  <i data-lucide="sliders-horizontal" style="width:16px;height:16px;"></i>
+                  Filters
+                </button>
+              </div>
+              <div class="shop-toolbar__right">
+                <select class="sort-select" id="sort-select" aria-label="Sort by">
+                  <option value="createdAt">Newest First</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
+                  <option value="popular">Most Popular</option>
+                  <option value="name">Name: A-Z</option>
+                </select>
+                <div class="view-toggle hide-mobile">
+                  <button class="view-toggle__btn active" data-view="grid" aria-label="Grid view">
+                    <i data-lucide="grid-3x3" style="width:16px;height:16px;"></i>
+                  </button>
+                  <button class="view-toggle__btn" data-view="list" aria-label="List view">
+                    <i data-lucide="list" style="width:16px;height:16px;"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="product-grid" id="product-grid">
+              <!-- Dynamically loaded -->
+            </div>
+
+            <!-- Infinite Scroll Loader -->
+            <div class="infinite-loader" id="infinite-loader">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/pages/shop.js"></script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+/* ============================================
+   FILORAE — Base Typography & Global Styles
+   ============================================ */
+
+/* ---- Body ---- */
+body {
+  font-family: var(--font-body);
+  font-weight: var(--fw-regular);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: var(--lh-normal);
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* ---- Page Wrapper ---- */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-wrapper > main {
+  flex: 1;
+}
+
+/* ---- Headings ---- */
+h1, .h1 {
+  font-family: var(--font-heading);
+  font-size: var(--text-5xl);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--color-heading);
+}
+
+h2, .h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--color-heading);
+}
+
+h3, .h3 {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  color: var(--color-heading);
+}
+
+h4, .h4 {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
+  color: var(--color-heading);
+}
+
+h5, .h5 {
+  font-family: var(--font-body);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-heading);
+}
+
+h6, .h6 {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--color-heading);
+}
+
+/* ---- Brand Typography ---- */
+.brand-name {
+  font-family: var(--font-brand);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+}
+
+/* ---- Paragraph ---- */
+p {
+  margin-bottom: var(--space-4);
+  line-height: var(--lh-normal);
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+.text-lead {
+  font-size: var(--text-lg);
+  color: var(--color-text-light);
+  line-height: var(--lh-relaxed);
+}
+
+.text-small {
+  font-size: var(--text-sm);
+  color: var(--color-text-light);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* ---- Links ---- */
+a {
+  color: var(--color-link);
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background-color: currentColor;
+  transition: width var(--duration-normal) var(--ease-default);
+}
+
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* ---- Strong / Emphasis ---- */
+strong, b {
+  font-weight: var(--fw-semibold);
+}
+
+em, i {
+  font-style: italic;
+}
+
+/* ---- Blockquote ---- */
+blockquote {
+  padding-left: var(--space-6);
+  border-left: 3px solid var(--sage-300);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-style: italic;
+  color: var(--color-text-light);
+  margin: var(--space-8) 0;
+}
+
+/* ---- Horizontal Rule ---- */
+hr {
+  border: none;
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-8) 0;
+}
+
+/* ---- Code ---- */
+code {
+  font-family: 'Fira Code', monospace;
+  font-size: var(--text-sm);
+  background-color: var(--sage-50);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Section Headings ---- */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.section-header .section-subtitle {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--space-3);
+}
+
+.section-header .section-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--fw-semibold);
+  color: var(--color-heading);
+  margin-bottom: var(--space-4);
+}
+
+.section-header .section-desc {
+  font-size: var(--text-md);
+  color: var(--color-text-light);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: var(--lh-relaxed);
+}
+
+.section-header .section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.section-header .section-divider::before,
+.section-header .section-divider::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background-color: var(--sage-300);
+}
+
+.section-header .section-divider i {
+  color: var(--blush-400);
+  font-size: var(--text-sm);
+}
+
+/* ---- Price Typography ---- */
+.price {
+  font-family: var(--font-body);
+  font-weight: var(--fw-semibold);
+  color: var(--sage-900);
+}
+
+.price-old {
+  font-weight: var(--fw-regular);
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  font-size: var(--text-sm);
+}
+
+.price-discount {
+  font-size: var(--text-xs);
+  font-weight: var(--fw-medium);
+  color: var(--color-success);
+  background-color: rgba(92, 184, 92, 0.1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+}
+
+/* ---- Rating Stars ---- */
+.rating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.rating .star {
+  color: var(--terracotta-400);
+  font-size: var(--text-sm);
+}
+
+.rating .star.empty {
+  color: var(--cream-300);
+}
+
+.rating-count {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-left: var(--space-1);
+}
+
+/* ---- Badge ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.badge-best-seller {
+  background-color: var(--terracotta-300);
+  color: var(--white);
+}
+
+.badge-trending {
+  background-color: var(--blush-400);
+  color: var(--white);
+}
+
+.badge-limited {
+  background-color: var(--sage-700);
+  color: var(--white);
+}
+
+.badge-new {
+  background-color: var(--sage-500);
+  color: var(--white);
+}
+
+.badge-handmade {
+  background-color: var(--cream-300);
+  color: var(--sage-900);
+}
+
+.badge-custom {
+  background-color: var(--blush-200);
+  color: var(--blush-500);
+}
+
+/* ---- Decorative Elements ---- */
+.heart-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  color: var(--blush-400);
+  font-size: var(--text-sm);
+}
+
+.heart-divider::before,
+.heart-divider::after {
+  content: '';
+  width: 50px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--sage-300), transparent);
+}
+
+/* ---- Image wrapper ---- */
+.img-wrapper {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background-color: var(--cream-200);
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-default);
+}
+
+.img-wrapper:hover img {
+  transform: scale(1.05);
+}

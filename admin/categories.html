@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categories — Filorae Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-6);
+    }
+    .cat-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+    }
+    .cat-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      background-color: var(--bg-surface-hover);
+    }
+    .cat-info {
+      padding: var(--space-4);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* Simple Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: var(--z-modal);
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: var(--bg-surface);
+      width: 100%;
+      max-width: 500px;
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-lg);
+    }
+  </style>
+  <script>
+    (function() {
+      const saved = localStorage.getItem('filorae-admin-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__header">
+        <div class="sidebar__logo">
+          <i data-lucide="scissors" style="width:24px;height:24px;"></i>
+          filörae admin
+        </div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="nav-section-title">Overview</div>
+        <a href="index.html" class="nav-item">
+          <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+          Dashboard
+        </a>
+
+        <div class="nav-section-title">Store Management</div>
+        <a href="products.html" class="nav-item">
+          <i data-lucide="package" style="width:18px;height:18px;"></i>
+          Products
+        </a>
+        <a href="categories.html" class="nav-item active">
+          <i data-lucide="tags" style="width:18px;height:18px;"></i>
+          Categories
+        </a>
+
+        <div class="nav-section-title">Content</div>
+        <a href="homepage.html" class="nav-item">
+          <i data-lucide="layout" style="width:18px;height:18px;"></i>
+          Homepage
+        </a>
+        <a href="testimonials.html" class="nav-item">
+          <i data-lucide="message-square-heart" style="width:18px;height:18px;"></i>
+          Testimonials
+        </a>
+
+        <div class="nav-section-title">System</div>
+        <a href="users.html" class="nav-item">
+          <i data-lucide="users" style="width:18px;height:18px;"></i>
+          Users
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i data-lucide="settings" style="width:18px;height:18px;"></i>
+          Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <header class="header">
+        <div class="header__left"></div>
+        <div class="header__right">
+          <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode">
+            <i data-lucide="moon" style="width:20px;height:20px;" id="theme-icon"></i>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="page-header">
+          <h1 class="page-title">Categories</h1>
+          <button class="btn btn-primary" id="btn-add-cat">
+            <i data-lucide="plus" style="width:16px;height:16px;"></i>
+            Add Category
+          </button>
+        </div>
+
+        <div class="cat-grid" id="cat-grid">
+          <!-- Populated by JS -->
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="cat-modal">
+    <div class="modal-content">
+      <h2 style="margin-bottom:var(--space-4);" id="modal-title">Add Category</h2>
+      <form id="cat-form">
+        <input type="hidden" id="cat-id">
+        <div class="form-group">
+          <label class="form-label" for="cat-name">Category Name *</label>
+          <input type="text" id="cat-name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cat-slug">URL Slug *</label>
+          <input type="text" id="cat-slug" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cat-order">Display Order</label>
+          <input type="number" id="cat-order" class="form-control" value="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cat-image">Cover Image URL</label>
+          <input type="url" id="cat-image" class="form-control" placeholder="https://...">
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:var(--space-2);margin-top:var(--space-6);">
+          <button type="button" class="btn btn-outline" id="btn-close-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-cat">Save Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { requireAdmin } from './js/services/auth.js';
+    import { db } from './js/config/firebase.js';
+    import { collection, getDocs, deleteDoc, doc, setDoc, query, orderBy } from 'https://www.gstatic.com/firebasejs/11.7.3/firebase-firestore.js';
+
+    requireAdmin();
+    if(window.lucide) window.lucide.createIcons();
+
+    const grid = document.getElementById('cat-grid');
+    const modal = document.getElementById('cat-modal');
+    const form = document.getElementById('cat-form');
+    let categories = [];
+
+    // Load
+    async function loadCategories() {
+      grid.innerHTML = '<p>Loading...</p>';
+      const q = query(collection(db, 'categories'), orderBy('order', 'asc'));
+      const snapshot = await getDocs(q);
+      categories = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+      
+      grid.innerHTML = '';
+      categories.forEach(cat => {
+        const div = document.createElement('div');
+        div.className = 'cat-card';
+        div.innerHTML = `
+          <img src="${cat.image || 'https://placehold.co/400x200?text=No+Image'}" alt="${cat.name}" class="cat-img">
+          <div class="cat-info">
+            <div>
+              <h3 style="font-weight:var(--fw-semibold);">${cat.name}</h3>
+              <p style="font-size:var(--text-xs);color:var(--text-tertiary);">Order: ${cat.order || 0} | /${cat.slug}</p>
+            </div>
+            <div style="display:flex;gap:4px;">
+              <button class="icon-btn btn-edit" data-id="${cat.id}"><i data-lucide="edit" style="width:16px;height:16px;"></i></button>
+              <button class="icon-btn btn-delete" data-id="${cat.id}" style="color:var(--color-error);"><i data-lucide="trash-2" style="width:16px;height:16px;"></i></button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(div);
+      });
+      if(window.lucide) window.lucide.createIcons();
+
+      // Attach events
+      document.querySelectorAll('.btn-edit').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const cat = categories.find(c => c.id === btn.dataset.id);
+          document.getElementById('modal-title').textContent = 'Edit Category';
+          document.getElementById('cat-id').value = cat.id;
+          document.getElementById('cat-name').value = cat.name;
+          document.getElementById('cat-slug').value = cat.slug;
+          document.getElementById('cat-order').value = cat.order || 0;
+          document.getElementById('cat-image').value = cat.image || '';
+          modal.classList.add('active');
+        });
+      });
+
+      document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if(confirm('Delete this category?')) {
+            await deleteDoc(doc(db, 'categories', btn.dataset.id));
+            loadCategories();
+          }
+        });
+      });
+    }
+
+    loadCategories();
+
+    // Modal behavior
+    document.getElementById('btn-add-cat').addEventListener('click', () => {
+      form.reset();
+      document.getElementById('cat-id').value = '';
+      document.getElementById('modal-title').textContent = 'Add Category';
+      modal.classList.add('active');
+    });
+
+    document.getElementById('btn-close-modal').addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    // Auto-slug
+    document.getElementById('cat-name').addEventListener('input', (e) => {
+      if(!document.getElementById('cat-id').value) {
+        document.getElementById('cat-slug').value = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      }
+    });
+
+    // Save
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('cat-id').value || document.getElementById('cat-slug').value;
+      const data = {
+        name: document.getElementById('cat-name').value,
+        slug: document.getElementById('cat-slug').value,
+        order: parseInt(document.getElementById('cat-order').value) || 0,
+        image: document.getElementById('cat-image').value
+      };
+      
+      const btn = document.getElementById('btn-save-cat');
+      btn.textContent = 'Saving...';
+      
+      await setDoc(doc(db, 'categories', id), data);
+      modal.classList.remove('active');
+      btn.textContent = 'Save Category';
+      loadCategories();
+    });
+  </script>
+</body>
+</html>
+
